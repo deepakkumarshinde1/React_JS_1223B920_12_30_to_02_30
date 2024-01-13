@@ -1,1 +1,10 @@
 Welcome to session
+
+Javascript Single Thread
+
+
+Uncaught SyntaxError
+
+Uncaught ReferenceError (memory)
+
+Uncaught TypeError
