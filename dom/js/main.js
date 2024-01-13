@@ -1,62 +1,33 @@
-// change text
-// change color to red
+let saveButton = document.querySelector("#save-todo");
+let todoInput = document.querySelector("#todo-input");
+let list = document.querySelector("#list");
 
-// change the text on button click
+let todos = ["Task-3", "Task-2", "Task-1"];
+printData();
+// add event
+saveButton.addEventListener("click", function () {
+  let value = todoInput.value;
+  todos.unshift(value);
 
-// onclick of button we want to set the input text to h1 element
-
-// on enter set a input text to h1 element
-
-// old
-// document.getElementById();// id
-// document.getElementsByClassName();// className
-// document.getElementsByName();// elementName
-
-// new
-// document.querySelector();// css selector (single)
-//document.querySelectorAll();// css selector (list)
-
-/**
- * selectors
- *  id => #idName
- *  class => .className
- *  element => elementName
- *  group => h1,.class,#id,#id2
- *  universal => *
- *  child =>  parent > child
- *  adjacent =>   parent any_level_child
- *  attribute => input[type=text]
- *  sibling => sibling + sibling
- *  general sibling ==> sibling ~ sibling
- */
-
-// element or elements or null
-// element is input , textarea, select ==> value (get / set data)
-// element is not input or textarea or select ==> innerHTML (get / set data)
-
-//console.log(h1Element.innerHTML);
-
-// click operation --> event --> user actions
-// mouse , keyboards , (load , unload , printbefore)
-// add action
-
-let h1Element = document.querySelector("h1");
-let button = document.querySelector("#change-h1");
-let inputText = document.querySelector(".input-text");
-
-button.addEventListener("click", changeText);
-
-inputText.addEventListener("keyup", (event) => {
-  if (event.keyCode === 13) {
-    changeText();
-  }
+  printData();
 });
 
-function changeText() {
-  let text = inputText.value;
-  h1Element.innerText = text;
-  h1Element.style.color = "red";
+// [val1, val2 , va3]
+function printData() {
+  let newArray = todos.map(function (item, key) {
+    return `<li class="list-group-item"><button class="btn btn-danger btn-sm remove" >DEL</button> ${item}</li>`;
+  });
+  // convert array to a string ==> join
+  let _list = newArray.join("");
+  list.innerHTML = _list;
 
-  // reset input
-  inputText.value = "";
+  // event inject
+
+  let removeBtnList = document.querySelectorAll(".remove"); // []
+  // remove element
+  removeBtnList.forEach(function (removeBtn) {
+    removeBtn.addEventListener("click", function () {
+      console.log("remove");
+    });
+  });
 }
