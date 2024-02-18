@@ -143,3 +143,7 @@ let instructor = new Instructor({
 
 users.createAccount();
 instructor.createAccount();
+
+
+// micro task (high priority) (web api call fetch , promise , xhr)
+// macro task (low priority) (setInterval , setTimeout , Click)
