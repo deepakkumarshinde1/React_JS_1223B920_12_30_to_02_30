@@ -7,10 +7,13 @@ import Header from "./components/Header";
 import PageNotFound from "./components/Page-Not-Found";
 import CreateBlog from "./components/author/CreateBlog";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

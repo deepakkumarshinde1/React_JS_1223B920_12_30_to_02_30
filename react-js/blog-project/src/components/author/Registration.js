@@ -1,4 +1,7 @@
+import axios from "axios";
 import { useRef } from "react";
+import Swal from "sweetalert2";
+import { Error } from "../Tostify";
 
 const Registration = (props) => {
   let { setShowPopUp } = props;
@@ -12,28 +15,81 @@ const Registration = (props) => {
   };
 
   const saveNewUser = async () => {
-    let _newUser = {
-      id: Date.now(),
-      name: newUser.name.current.value,
-      email: newUser.email.current.value,
-      mobile: newUser.mobile.current.value,
-      password: newUser.password.current.value,
-      c_password: newUser.c_password.current.value,
-    };
+    try {
+      let _newUser = {
+        id: Date.now(),
+        name: newUser.name.current.value,
+        email: newUser.email.current.value,
+        mobile: newUser.mobile.current.value,
+        password: newUser.password.current.value,
+        c_password: newUser.c_password.current.value,
+      };
 
-    delete _newUser.c_password; // delete confirm password
+      if (_newUser.name === "") {
+        Error("Enter Name");
+        return false;
+      }
 
-    let url = "http://localhost:3004/users";
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(_newUser),
-    };
-    let response = await fetch(url, options);
-    let data = await response.json();
-    console.log(data);
+      if (_newUser.email === "") {
+        Error("Enter Email Id");
+        return false;
+      }
+
+      if (_newUser.mobile === "") {
+        Error("Enter Mobile Number");
+        return false;
+      }
+
+      if (_newUser.password === "") {
+        Error("Enter Password");
+        return false;
+      }
+
+      if (_newUser.c_password === "") {
+        Error("Enter Confirm Password");
+        return false;
+      }
+
+      if (_newUser.password !== _newUser.c_password) {
+        Error("Enter Password and COnfirm Password do not match");
+        return false;
+      }
+
+      delete _newUser.c_password; // delete confirm password
+
+      // userCheck
+      let userCheck = `http://localhost:3004/users?email=${_newUser.email}`;
+      let { data: isUserExist } = await axios.get(userCheck);
+
+      if (isUserExist.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "User Already Exists, with given email",
+        });
+
+        return false;
+      }
+
+      let url = "http://localhost:3004/users";
+      let { data } = await axios.post(url, _newUser);
+
+      Swal.fire({
+        icon: "success",
+        title: "User Registration done successfully",
+        showConfirmButton: false,
+        timer: 3000,
+      }).then(() => {
+        setShowPopUp(false);
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Server Error, Try again",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
   };
   return (
     <>
